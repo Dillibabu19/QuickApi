@@ -141,7 +141,7 @@ function App() {
         }}
       >
         {/*<div style={{ padding: "20px", fontFamily: "sans-serif" }}></div>*/}
-        <div style={{ flex: "1 1 400px", maxWidth: "500px" }}>
+        <div style={{ flex: "1 1 400px", width: "500px" }}>
           {/* Top Bar */}
           <h4>Request</h4>
           <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
@@ -250,7 +250,7 @@ function App() {
           </div>
         </div>
 
-        <div style={{ flex: "1 1 400px", maxWidth: "550px" }}>
+        <div style={{ flex: "1 1 400px", width: "550px" }}>
           {/* Response */}
           <h4>Response</h4>
           <div>
