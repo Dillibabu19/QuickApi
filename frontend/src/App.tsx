@@ -11,7 +11,7 @@ type HistoryItem = {
 
 function App() {
   const [url, setUrl] = useState("");
-  const [method, setMethod] = useState("GET");
+  const [method, setMethod] = useState("POST");
   const [headers, setHeaders] = useState<Header[]>([]);
   const [body, setBody] = useState("");
   const [response, setResponse] = useState("");
@@ -79,8 +79,8 @@ function App() {
       if (body && method !== "GET") {
         try {
           JSON.parse(body);
-        } catch {
-          setResponse("Invalid JSON body");
+        } catch (e) {
+          setResponse("Invalid JSON: " + (e as Error).message);
           setLoading(false);
           return;
         }
@@ -125,161 +125,179 @@ function App() {
       style={{
         padding: "16px",
         fontFamily: "monospace",
-        width: "800px",
-        // maxWidth: "1300px",
+        // width: "800px",
+        maxWidth: "1300px",
         margin: "0 auto",
       }}
     >
-      <h2>QuickReq</h2>
-
-      {/*<div style={{ padding: "20px", fontFamily: "sans-serif" }}></div>*/}
-
-      {/* Top Bar */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-        <select value={method} onChange={(e) => setMethod(e.target.value)}>
-          <option>GET</option>
-          <option>POST</option>
-          <option>PUT</option>
-          <option>DELETE</option>
-        </select>
-
-        <input
-          style={{ flex: 1 }}
-          placeholder="Enter API URL"
-          value={url}
-          onKeyDown={handleKeyDown}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-
-        <button onClick={sendRequest} disabled={loading}>
-          {loading ? "Sending..." : "Send"}
-        </button>
-      </div>
-
-      {/* Headers */}
-      <h4>Headers</h4>
-      {headers.map((h, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            marginBottom: "5px",
-          }}
-        >
-          <input
-            placeholder="Key"
-            value={h.key}
-            onChange={(e) => handleHeaderChange(i, "key", e.target.value)}
-          />
-          <input
-            placeholder="Value"
-            value={h.value}
-            onChange={(e) => handleHeaderChange(i, "value", e.target.value)}
-          />
-        </div>
-      ))}
-      <button onClick={handleAddHeader}>+ Add Header</button>
-
-      {/* Body */}
-      <h4>Body</h4>
-      <textarea
-        rows={5}
-        style={{ width: "100%" }}
-        placeholder='{"key": "value"}'
-        onKeyDown={(e) => {
-          if (e.ctrlKey && e.key === "Enter") sendRequest();
-        }}
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-      />
+      <h2 style={{ marginBottom: "20px" }}>QuickReq</h2>
 
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          gap: "15px",
+          justifyContent: "space-evenly",
+          flexWrap: "wrap",
         }}
       >
-        <h4>History</h4>
-        <button
-          onClick={clearHistory}
-          style={{
-            fontSize: "12px",
-            padding: "4px 8px",
-            cursor: "pointer",
-          }}
-        >
-          Clear
-        </button>
-      </div>
-      <div style={{ marginBottom: "10px" }}>
-        {history.length === 0 && (
-          <p style={{ color: "#888" }}>No history yet</p>
-        )}
+        {/*<div style={{ padding: "20px", fontFamily: "sans-serif" }}></div>*/}
+        <div style={{ flex: "1 1 400px", maxWidth: "500px" }}>
+          {/* Top Bar */}
+          <h4>Request</h4>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <select value={method} onChange={(e) => setMethod(e.target.value)}>
+              <option>GET</option>
+              <option>POST</option>
+              <option>PUT</option>
+              <option>DELETE</option>
+            </select>
 
-        {history.map((item, index) => (
+            <input
+              style={{ flex: 1 }}
+              placeholder="Enter API URL"
+              value={url}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+
+            <button onClick={sendRequest} disabled={loading}>
+              {loading ? "Sending..." : "Send"}
+            </button>
+          </div>
+
+          {/* Headers */}
+          <h4>Headers</h4>
+          {headers.map((h, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                marginBottom: "5px",
+              }}
+            >
+              <input
+                placeholder="Key"
+                value={h.key}
+                onChange={(e) => handleHeaderChange(i, "key", e.target.value)}
+              />
+              <input
+                placeholder="Value"
+                value={h.value}
+                onChange={(e) => handleHeaderChange(i, "value", e.target.value)}
+              />
+            </div>
+          ))}
+          <button onClick={handleAddHeader}>+ Add Header</button>
+
+          {/* Body */}
+          <h4>Body</h4>
+          <textarea
+            rows={5}
+            style={{ width: "100%" }}
+            placeholder='{"key": "value"}'
+            onKeyDown={(e) => {
+              if (e.ctrlKey && e.key === "Enter") sendRequest();
+            }}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+          />
+
           <div
-            key={index}
-            onClick={() => loadHistory(item)}
             style={{
-              padding: "6px",
-              border: "1px solid #ccc",
-              marginBottom: "5px",
-              cursor: "pointer",
-              borderRadius: "4px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <strong>{item.method}</strong> {item.url}
+            <h4>History</h4>
+            <button
+              onClick={clearHistory}
+              style={{
+                fontSize: "12px",
+                padding: "4px 8px",
+                cursor: "pointer",
+              }}
+            >
+              Clear
+            </button>
           </div>
-        ))}
-      </div>
+          <div style={{ marginBottom: "10px" }}>
+            {history.length === 0 && (
+              <p style={{ color: "#888" }}>No history yet</p>
+            )}
 
-      {/* Response */}
-      <h4>Response</h4>
-      <div>
-        Status: {status} | Time: {time} ms
-      </div>
-      <div
-        style={{
-          padding: "16px",
-          fontFamily: "monospace",
-          // maxWidth: "1300px",
-          margin: "0 auto",
-          textAlign: "left",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "8px",
-            marginBottom: "8px",
-          }}
-        >
-          <button onClick={() => navigator.clipboard.writeText(response)}>
-            Copy
-          </button>
-          <button onClick={() => setResponse("")}>Clear</button>
+            {history.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => loadHistory(item)}
+                style={{
+                  padding: "6px",
+                  border: "1px solid #ccc",
+                  marginBottom: "5px",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <strong>{item.method}</strong> {item.url}
+              </div>
+            ))}
+          </div>
         </div>
-        <pre
-          style={{
-            background: "#111",
-            color: "#e6e6e6",
-            padding: "12px",
-            borderRadius: "6px",
-            overflowX: "auto",
-            whiteSpace: "pre",
-            textAlign: "left",
-            // width: "100%",
-            minHeight: "200px",
-            maxHeight: "400px",
-          }}
-        >
-          {response}
-        </pre>
+
+        <div style={{ flex: "1 1 400px", maxWidth: "550px" }}>
+          {/* Response */}
+          <h4>Response</h4>
+          <div>
+            Status: {status} | Time: {time} ms
+          </div>
+          <div
+            style={{
+              padding: "16px",
+              fontFamily: "monospace",
+              // maxWidth: "1300px",
+              margin: "0 auto",
+              textAlign: "left",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "8px",
+              }}
+            >
+              <button onClick={() => navigator.clipboard.writeText(response)}>
+                Copy
+              </button>
+              <button onClick={() => setResponse("")}>Clear</button>
+            </div>
+            <pre
+              style={{
+                background: "#111",
+                color: "#e6e6e6",
+                padding: "12px",
+                borderRadius: "6px",
+                overflowX: "auto",
+                whiteSpace: "pre",
+                textAlign: "left",
+                width: "500px",
+                maxWidth: "100%",
+                minHeight: "200px",
+                maxHeight: "400px",
+              }}
+            >
+              {response}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   );
