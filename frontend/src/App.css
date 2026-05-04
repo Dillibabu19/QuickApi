@@ -182,3 +182,130 @@
     border-right-color: var(--border);
   }
 }
+
+.qa-page {
+  min-height: 100vh;
+  padding: 18px 16px 28px;
+  background: #0b1220;
+  color: #e6e6e6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+.qa-shell {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.qa-titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 6px 12px;
+}
+
+.qa-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.qa-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 6px;
+}
+
+.qa-tab {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.84);
+  padding: 8px 12px;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.qa-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.qa-tab:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.qa-tab.isActive {
+  background: rgba(17, 24, 39, 0.95);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(1px);
+}
+
+.qa-panel {
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.qr-root {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(420px, 1.1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.qr-left,
+.qr-right {
+  min-width: 0;
+}
+
+.qr-topRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.qr-url {
+  flex: 1;
+  min-width: 0;
+}
+
+.qr-body {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.qr-pre {
+  background: #111;
+  color: #e6e6e6;
+  padding: 12px;
+  border-radius: 6px;
+  overflow: auto;
+  white-space: pre;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 200px;
+  max-height: 400px;
+}
+
+@media (max-width: 900px) {
+  .qr-root {
+    grid-template-columns: 1fr;
+  }
+
+  .qr-topRow {
+    flex-wrap: wrap;
+  }
+
+  .qr-url {
+    flex-basis: 100%;
+  }
+}
+
