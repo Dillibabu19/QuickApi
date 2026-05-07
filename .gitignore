@@ -137,3 +137,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# backend
+/backend/.venv
+/backend/uvicorn.err.log
+/backend/uvicorn.out.log
+/backend/app/__pycache__
+/backend/app/app.log
