@@ -295,6 +295,20 @@
   max-height: 400px;
 }
 
+.qr-kv-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.qr-kv-input {
+  flex: 1 1 120px;
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .qr-root {
     grid-template-columns: 1fr;
@@ -304,7 +318,7 @@
     flex-wrap: wrap;
   }
 
-  .qr-url {
+  .qr-topRow > button {
     flex-basis: 100%;
   }
 }
