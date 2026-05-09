@@ -1,3 +1,4 @@
+import os
 import socket
 import ipaddress
 from time import perf_counter
@@ -55,9 +56,12 @@ class ProxyResponse(BaseModel):
 app = FastAPI(title="QuickApi Proxy")
 
 # Enable CORS for local development frontend
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173,http://127.0.0.1:5173")
+allow_origins = [url.strip() for url in FRONTEND_URL.split(",") if url.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allow_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
